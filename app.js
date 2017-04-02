@@ -2,33 +2,41 @@ const spawn = require('threads').spawn;
 
 console.log(process.pid)
 
-const run = async (t,id) => {
-    t
-        .send({ string : '123', id:id })
-/*
-        .on('error', (error) => {
-            console.error('Worker errored:', error);
-        })
-        .on('exit', () => {
-            console.log('Worker has been terminated.');
+class TestThread{
+    constructor(){
+        this.id = 0;
+        this.handle = spawn("./workers/test.js")
+            .on('message', (response) => {
+                console.log(response.id)
+                console.log('123 * 2 = ', response.integer * 2);
+           })
+            .on('error', (error) => {
+                console.error('Worker errored:', error);
+           })
+           .on('exit', () => {
+                console.log('Worker has been terminated.');
+           });
+    }
+    run(){
+        this.handle.send({
+            string : '123', id:this.id++
         });
-*/
+    }
+    close(){
+        this.handle.kill()
+    }
 }
 
 
 const main = async () => {
-    const thread = spawn("./workers/test.js")
-        .on('message', (response) => {
-            console.log(response.id)
-            console.log('123 * 2 = ', response.integer * 2);
-//            t.kill();
-        })
-    run(thread,1)
-    run(thread,2)
-    run(thread,3)
-    run(thread,4)
-    run(thread,5)
-    run(thread,6)
+    const t1 = new TestThread();
+    const t2 = new TestThread();
+    t1.run()
+    t1.run()
+    t1.run()
+    t2.run()
+    t2.run()
+    t2.run()
 }
 
 main()
