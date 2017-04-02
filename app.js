@@ -2,6 +2,7 @@ const spawn = require('threads').spawn;
 
 const thread = spawn("./workers/test.js")
 
+console.log(process.pid)
 
 thread
   .send({ string : '123' })
