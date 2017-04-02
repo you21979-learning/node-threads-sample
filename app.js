@@ -9,13 +9,13 @@ class TestThread{
             .on('message', (response) => {
                 console.log(response.id)
                 console.log('123 * 2 = ', response.result.integer * 2);
-           })
+            })
             .on('error', (error) => {
                 console.error('Worker errored:', error);
-           })
-           .on('exit', () => {
+            })
+            .on('exit', () => {
                 console.log('Worker has been terminated.');
-           });
+            });
     }
     run(){
         this.handle.send({
