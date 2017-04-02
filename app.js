@@ -8,7 +8,7 @@ class TestThread{
         this.handle = spawn("./workers/test.js")
             .on('message', (response) => {
                 console.log(response.id)
-                console.log('123 * 2 = ', response.integer * 2);
+                console.log('123 * 2 = ', response.result.integer * 2);
            })
             .on('error', (error) => {
                 console.error('Worker errored:', error);
