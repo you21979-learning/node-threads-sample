@@ -8,7 +8,7 @@ class TestThread{
         this.handle = spawn("./workers/test.js")
             .on('message', (response) => {
                 console.log(response.id)
-                console.log('123 * 2 = ', response.result.integer * 2);
+//                console.log('123 * 2 = ', response.result.integer * 2);
             })
             .on('error', (error) => {
                 console.error('Worker errored:', error);
@@ -31,12 +31,14 @@ class TestThread{
 const main = async () => {
     const t1 = new TestThread();
     const t2 = new TestThread();
-    t1.run()
-    t1.run()
-    t1.run()
-    t2.run()
-    t2.run()
-    t2.run()
+    const update = () => {
+        t1.run()
+        t2.run()
+        setTimeout( () => {
+            update()
+        }, 0)
+    }
+    update()
 }
 
 main()
